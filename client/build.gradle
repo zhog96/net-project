@@ -1,0 +1,6 @@
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx:1.11.0"
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:1.11.0"
+    implementation "com.badlogicgames.gdx:gdx-platform:1.11.0:natives-desktop"
+    implementation "org.springframework.boot:spring-boot-starter-websocket"
+}
