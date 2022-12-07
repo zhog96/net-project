@@ -2,3 +2,4 @@ rootProject.name = "net-project"
 
 include ":server"
 include ":client"
+include ":smarthomeserver"
