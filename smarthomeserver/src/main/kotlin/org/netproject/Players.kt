@@ -2,7 +2,7 @@ package org.netproject
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-class Greeting(
-        @JsonProperty("content")
-        val content: String,
+class Players (
+        @JsonProperty
+        val players: List<Player>
 )

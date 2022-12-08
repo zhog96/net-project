@@ -9,7 +9,6 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject currentPlayer;
-    public GameObject myCurrentPlayer;
     public Dictionary<int, GameObject> anotherPlayers = new();
     public ConcurrentDictionary<int, DtoPlayer> DtoPlayers = new();
     public ConcurrentQueue<int> ids = new();
@@ -34,8 +33,7 @@ public class Spawner : MonoBehaviour
             {
                 GameObject clone = Instantiate(currentPlayer.gameObject,
                     currentPlayer.transform.position,
-                    currentPlayer.transform.rotation) as GameObject;
-                print("Instantiated " + id);
+                    currentPlayer.transform.rotation);
                 clone.tag = "AnotherPlayer";
                 clone.GetComponent<Player>().id = id;
                 anotherPlayers.Add(id, clone);
@@ -45,8 +43,6 @@ public class Spawner : MonoBehaviour
                 DtoPlayer dtoPlayer = DtoPlayers[id];
                 anotherPlayers[id].transform.position = new Vector3((float) dtoPlayer.x, (float) dtoPlayer.y, (float) dtoPlayer.z);
                 anotherPlayers[id].transform.rotation = new Quaternion(0, (float) dtoPlayer.rotation, 0, anotherPlayers[id].transform.rotation.w);
-                print("set another player coordinates x: " + dtoPlayer.x + " y: " + dtoPlayer.y);
-                print("set another player coordinates rotation: " + dtoPlayer.rotation);
             }
         }
     }
@@ -54,21 +50,18 @@ public class Spawner : MonoBehaviour
     public void AddPlayer(int id)
     {
         ids.Enqueue(id);
-        print("AddedPlayer " + id  + " size: " + ids.Count);
     }
 
     public void UpdatePlayers(DtoPlayer dtoPlayer)
     {
-        print("UpdatePlayers " + dtoPlayer.id);
         if (DtoPlayers.ContainsKey(dtoPlayer.id))
         {
-            print("anotherPlayers.ContainsKey(dtoPlayer.id) " + dtoPlayer.id);
             DtoPlayers.TryUpdate(dtoPlayer.id, dtoPlayer, DtoPlayers[dtoPlayer.id]);
         }
         else
         {
-            AddPlayer(dtoPlayer.id);
             DtoPlayers.TryAdd(dtoPlayer.id, dtoPlayer);
+            AddPlayer(dtoPlayer.id);
         }
     }
 }

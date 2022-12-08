@@ -1,16 +1,16 @@
 package org.netproject
 
-class Player {
-    var id: Int? = null
-    var x: Double? = null
-    var y: Double? = null
-    var z: Double? = null
-    var rotation: Double? = null
+import com.fasterxml.jackson.annotation.JsonProperty
 
-    fun updatePlayer(player: Player) {
-        x = player.x
-        y = player.y
-        z = player.z
-        rotation = player.rotation
-    }
-}
+data class Player(
+        @JsonProperty("id")
+        val id: Int,
+        @JsonProperty("x")
+        val x: Double,
+        @JsonProperty("y")
+        val y: Double,
+        @JsonProperty("z")
+        val z: Double,
+        @JsonProperty("rotation")
+        val rotation: Double
+)

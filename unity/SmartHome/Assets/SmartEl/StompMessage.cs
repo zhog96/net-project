@@ -4,7 +4,7 @@ namespace SmartEl
 {
     public class StompMessage
     {
-        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _headers;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref = "StompMessage" /> class.

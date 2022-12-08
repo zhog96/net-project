@@ -1,10 +1,8 @@
 package org.netproject
 
-class HelloMessage {
-    var name: String? = null
+import com.fasterxml.jackson.annotation.JsonProperty
 
-    constructor() {}
-    constructor(name: String?) {
-        this.name = name
-    }
-}
+class HelloMessage(
+        @JsonProperty("name")
+        val name: String,
+)
