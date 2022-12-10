@@ -38,7 +38,7 @@ class SaitamaScene(private val queue: Queue<SceneMessage>) : Scene {
         converter.objectMapper = ObjectMapper()
         stompClient.messageConverter = converter
         val sessionHandler: StompSessionHandler = StompSessionHandlerImpl(saitamaPosition)
-        session = stompClient.connect("ws://84.252.131.55:8080/gateway", sessionHandler).get()
+        session = stompClient.connect("ws://130.193.48.74:8080/gateway", sessionHandler).get()
     }
 
     override fun render() {

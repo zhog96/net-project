@@ -11,6 +11,12 @@ data class Player(
         val y: Double,
         @JsonProperty("z")
         val z: Double,
-        @JsonProperty("rotation")
-        val rotation: Double
+        @JsonProperty("rx")
+        val rx: Double,
+        @JsonProperty("ry")
+        val ry: Double,
+        @JsonProperty("rz")
+        val rz: Double,
+        @JsonProperty("w")
+        val w: Double,
 )
