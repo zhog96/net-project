@@ -6,13 +6,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int id;
+    public string id;
     void Start()
     {
         
     }
 
-    public void SetId(int id)
+    public void SetId(string id)
     {
         this.id = id;
     }

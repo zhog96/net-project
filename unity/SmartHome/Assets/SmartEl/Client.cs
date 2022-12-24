@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using SmartEl.Dtos;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using WebSocketSharp;
 using Object = System.Object;
@@ -13,11 +16,10 @@ namespace SmartEl
         public Button Button;
         // public Text host;
         public GameObject Spawner;
-        public Object spawnerComponentLock = new object();
         public Spawner spawnerComponent;
         public Text host;
         WebSocket ws;
-        private int id;
+        private string id;
 
         public void Start()
         {
@@ -41,7 +43,7 @@ namespace SmartEl
 
                 var sub = new StompMessage("SUBSCRIBE");
                 sub["id"] = "sub-" + clientId + "id";
-                sub["destination"] = "/user/queue/specific-user-" + sub["id"];
+                sub["destination"] = "/topic/id";
                 ws.Send(serializer.Serialize(sub));
 
                 sub["id"] = "sub-" + clientId + "players";
@@ -54,26 +56,20 @@ namespace SmartEl
                 var body = e.Data.Substring(e.Data.IndexOf("\n\n") + 2);
                 if (e.Data.Contains("/topic/id"))
                 {
-                    print(body);
-                    id = int.Parse(body);
-                }
-                if (e.Data.Contains("/topic/players") && id > 0)
-                {
-                    //lock (spawnerComponentLock)
+                    var message = JsonUtility.FromJson<Message<string>>(body);
+                    if (message.key == clientId)
                     {
-                        // print(body);
-                        if (body.Contains("[]"))
-                        {
-                            DtoPlayer[] players = { };
-                            spawnerComponent.UpdatePlayers(players);
-                        }
-                        else
-                        {
-                            var players = JsonUtility.FromJson<DtoPlayers>(body).players;
-                            // spawnerComponent.UpdatePlayers(players);
-                            print(id);
-                            spawnerComponent.UpdatePlayers(players.Where(p => p.id != id).ToArray());
-                        }
+                        print(body);
+                        id = message.payload;
+                    }
+                }
+                if (e.Data.Contains("/topic/players") && id != null)
+                {
+                    {
+                        var message = JsonUtility.FromJson<Message<List<DtoPlayer>>>(body);
+                        // spawnerComponent.UpdatePlayers(message.payload.ToArray());
+                        print(id);
+                        spawnerComponent.UpdatePlayers(message.payload.Where(p => p.id != id).ToArray());
                     }
                 }
             };
@@ -85,15 +81,7 @@ namespace SmartEl
 
         public void FixedUpdate()
         {
-            // 1. Слушать сервер
-            //   1.1. Запрос на добавление другого игрока
-            //   1.2. Смотреть передвижения других игроков
-            //
-            //
-            // 1. Отправлять на сервер
-            //   1.1. Запрос на исключение себя из списка других игроков
-            //   1.2. Отправлять свои координаты
-            if (id > 0)
+            if (id != null)
             {
                 var playerController = spawnerComponent.currentPlayer.GetComponent<Player>();
                 playerController.SetId(id);
@@ -103,21 +91,12 @@ namespace SmartEl
 
         private void _auth(string clientId)
         {
-            var connect = new StompMessage("SEND", JsonUtility.ToJson(new HelloMessage("Bobby!")));
-            connect["id"] = "sub-" + clientId;
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<string>(clientId, null)));
             connect["destination"] = "/app/register";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
         
-        private void _getPlayers()
-        {
-            var connect = new StompMessage("SEND", JsonUtility.ToJson(new HelloMessage("Bobby!")));
-            connect["destination"] = "/app/getPlayers";
-            var serializer = new StompMessageSerializer();
-            print(ws.IsAlive);
-            ws.Send(serializer.Serialize(connect));
-        }
         private void NoParamaterOnclick()
         {
             var currentPlayer = spawnerComponent.currentPlayer;
@@ -125,14 +104,16 @@ namespace SmartEl
             var rotation = currentPlayer.transform.rotation;
             var id = currentPlayer.GetComponent<Player>().id;
             // print(id);
-            if (id > 0)
+            if (id != null)
             {
-                var connect = new StompMessage("SEND", JsonUtility.ToJson(new DtoPlayer(id, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, rotation.w)));
+                var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DtoPlayer>(
+                    id,
+                    new DtoPlayer(id, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, rotation.w)))
+                );
                 connect["destination"] = "/app/updatePlayer";
                 StompMessageSerializer serializer = new StompMessageSerializer();
                 ws.Send(serializer.Serialize(connect));
             }
-            _getPlayers();
         }
         
         // void OnApplicationQuit()

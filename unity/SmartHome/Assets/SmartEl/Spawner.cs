@@ -11,7 +11,7 @@ namespace SmartEl
     public class Spawner : MonoBehaviour
     {
         public GameObject currentPlayer;
-        private readonly Dictionary<int, GameObject> _anotherPlayers = new();
+        private readonly Dictionary<string, GameObject> _anotherPlayers = new();
         private volatile DtoPlayer[] _players = {};
         private int _animIDSpeed = Animator.StringToHash("Speed");
 
