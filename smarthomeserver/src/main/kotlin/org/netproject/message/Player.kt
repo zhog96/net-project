@@ -6,6 +6,8 @@ data class Player(
         @JsonProperty
         val id: String,
         @JsonProperty
+        val uid: String,
+        @JsonProperty
         val x: Double,
         @JsonProperty
         val y: Double,

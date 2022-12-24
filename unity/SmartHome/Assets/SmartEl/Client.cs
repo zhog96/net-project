@@ -52,7 +52,6 @@ namespace SmartEl
             };
             ws.OnMessage += (sender, e) =>
             {
-                // print("Spring now says: " + e.Data);
                 var body = e.Data.Substring(e.Data.IndexOf("\n\n") + 2);
                 if (e.Data.Contains("/topic/id"))
                 {
@@ -67,8 +66,6 @@ namespace SmartEl
                 {
                     {
                         var message = JsonUtility.FromJson<Message<List<DtoPlayer>>>(body);
-                        // spawnerComponent.UpdatePlayers(message.payload.ToArray());
-                        print(id);
                         spawnerComponent.UpdatePlayers(message.payload.Where(p => p.id != id).ToArray());
                     }
                 }
@@ -83,8 +80,6 @@ namespace SmartEl
         {
             if (id != null)
             {
-                var playerController = spawnerComponent.currentPlayer.GetComponent<Player>();
-                playerController.SetId(id);
                 NoParamaterOnclick();
             }
         }
@@ -102,13 +97,12 @@ namespace SmartEl
             var currentPlayer = spawnerComponent.currentPlayer;
             var position = currentPlayer.transform.position;
             var rotation = currentPlayer.transform.rotation;
-            var id = currentPlayer.GetComponent<Player>().id;
             // print(id);
             if (id != null)
             {
                 var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DtoPlayer>(
                     id,
-                    new DtoPlayer(id, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, rotation.w)))
+                    new DtoPlayer(id, Guid.NewGuid().ToString(), position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, rotation.w)))
                 );
                 connect["destination"] = "/app/updatePlayer";
                 StompMessageSerializer serializer = new StompMessageSerializer();

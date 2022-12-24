@@ -6,9 +6,10 @@ namespace SmartEl
     [Serializable]
     public class DtoPlayer
     {
-        public DtoPlayer(string id, double x, double y, double z, double rx, double ry, double rz, double w)
+        public DtoPlayer(string id, string uid, double x, double y, double z, double rx, double ry, double rz, double w)
         {
             this.id = id;
+            this.uid = uid;
             this.x = x;
             this.y = y;
             this.z = z;
@@ -19,6 +20,7 @@ namespace SmartEl
         }
 
         public string id;
+        public string uid;
         public double x; 
         public double y;
         public double z;

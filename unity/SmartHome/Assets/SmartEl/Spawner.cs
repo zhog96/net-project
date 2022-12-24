@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using StarterAssets;
 using UnityEngine;
 
 namespace SmartEl
@@ -10,20 +11,28 @@ namespace SmartEl
 
     public class Spawner : MonoBehaviour
     {
+        private class Entity
+        {
+            public GameObject player;
+            public bool moving;
+            public string uid;
+
+            public Entity(GameObject player, bool moving, string uid)
+            {
+                this.player = player;
+                this.moving = moving;
+                this.uid = uid;
+            }
+        }
+
         public GameObject currentPlayer;
-        private readonly Dictionary<string, GameObject> _anotherPlayers = new();
+        private readonly Dictionary<string, Entity> _anotherPlayers = new();
         private volatile DtoPlayer[] _players = {};
         private int _animIDSpeed = Animator.StringToHash("Speed");
 
         // Start is called before the first frame update
         void Start()
         {
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            // anotherPlayers[0].GetComponent<Animator>().SetFloat(_animIDSpeed, 3f);
         }
 
         private void FixedUpdate()
@@ -36,18 +45,36 @@ namespace SmartEl
                         currentPlayer.transform.position,
                         currentPlayer.transform.rotation);
                     clone.tag = "AnotherPlayer";
-                    clone.GetComponent<Player>().id = player.id;
-                    _anotherPlayers.Add(player.id, clone);
+                    currentPlayer.gameObject.GetComponent<ThirdPersonController>();
+                    _anotherPlayers.Add(player.id, new Entity(clone, false, Guid.NewGuid().ToString()));
                 }
                 else
                 {
-                    _anotherPlayers[player.id].transform.position =
-                        new Vector3((float) player.x, (float) player.y, (float) player.z);
-                    _anotherPlayers[player.id].transform.rotation = new Quaternion(
+                    var pos = new Vector3((float) player.x, (float) player.y, (float) player.z);
+                    var anotherPlayer = _anotherPlayers[player.id];
+                    if (player.uid != anotherPlayer.uid)
+                    {
+                        anotherPlayer.moving = (pos - anotherPlayer.player.transform.position).sqrMagnitude > 1e-3;
+                    }
+                    anotherPlayer.player.transform.position = pos;
+                    anotherPlayer.player.transform.rotation = new Quaternion(
                         (float) player.rx,
                         (float) player.ry,
                         (float) player.rz,
                         (float) player.w);
+                    anotherPlayer.uid = player.uid;
+                }
+            }
+            foreach (var entity in _anotherPlayers.Values)
+            {
+                print(entity.moving);
+                if (entity.moving)
+                {
+                    entity.player.GetComponent<Animator>().SetFloat(_animIDSpeed, 3f);
+                }
+                else
+                {
+                    entity.player.GetComponent<Animator>().SetFloat(_animIDSpeed, 0f);
                 }
             }
         }
