@@ -14,10 +14,12 @@ namespace SmartEl
     public class Client : MonoBehaviour
     {
         public Button Button;
+
         // public Text host;
         public GameObject Spawner;
         public Spawner spawnerComponent;
-        public Text host;
+        public GameObject UIControllerObject;
+        public UIController UIControllerScript;
         WebSocket ws;
         private string id;
 
@@ -25,14 +27,17 @@ namespace SmartEl
         {
             Screen.SetResolution(960, 540, false, 60);
             spawnerComponent = Spawner.GetComponent<Spawner>();
+            UIControllerScript = UIControllerObject.GetComponent<UIController>();
             Button.onClick.AddListener(Subscribe);
+            UIControllerScript.ButtonToRequestHost.onClick.AddListener(_tryRequestHost);
+            UIControllerScript.ButtonToRequestGuest.onClick.AddListener(_tryRequestGuest);
         }
-        
+
         private void Subscribe()
         {
             var clientId = Guid.NewGuid().ToString();
-            // ws = new WebSocket("ws://"+ host.text +":8080/gs-guide-websocket");
-            ws = new WebSocket("ws://"+ "127.0.0.1" +":8080/gs-guide-websocket");
+            // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
+            ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
             ws.OnOpen += (sender, e) =>
             {
                 var serializer = new StompMessageSerializer();
@@ -59,9 +64,17 @@ namespace SmartEl
                     if (message.key == clientId)
                     {
                         print(body);
-                        id = message.payload;
+                        if (message.payload.Contains("RoleResponse"))
+                        {
+                            //todo check response and chose role
+                        }
+                        else
+                        {
+                            id = message.payload;
+                        }
                     }
                 }
+
                 if (e.Data.Contains("/topic/players") && id != null)
                 {
                     {
@@ -92,6 +105,22 @@ namespace SmartEl
             ws.Send(serializer.Serialize(connect));
         }
         
+        private void _tryRequestHost()
+        {
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Host, UIControllerScript.Password.text))));
+            connect["destination"] = "/app/register";
+            var serializer = new StompMessageSerializer();
+            ws.Send(serializer.Serialize(connect));
+        }
+        
+        private void _tryRequestGuest()
+        {
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Guest, ""))));
+            connect["destination"] = "/app/register";
+            var serializer = new StompMessageSerializer();
+            ws.Send(serializer.Serialize(connect));
+        }
+
         private void NoParamaterOnclick()
         {
             var currentPlayer = spawnerComponent.currentPlayer;
@@ -102,14 +131,15 @@ namespace SmartEl
             {
                 var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DtoPlayer>(
                     id,
-                    new DtoPlayer(id, Guid.NewGuid().ToString(), position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, rotation.w)))
+                    new DtoPlayer(id, Guid.NewGuid().ToString(), position.x, position.y, position.z, rotation.x,
+                        rotation.y, rotation.z, rotation.w)))
                 );
                 connect["destination"] = "/app/updatePlayer";
                 StompMessageSerializer serializer = new StompMessageSerializer();
                 ws.Send(serializer.Serialize(connect));
             }
         }
-        
+
         // void OnApplicationQuit()
         // {
         //     var SpawnerController = Spawner.GetComponent<Spawner>();
