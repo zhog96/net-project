@@ -9,6 +9,7 @@ namespace SmartEl
         public Text Password;
         public Button ButtonToRequestHost;
         public Button ButtonToRequestGuest;
+        public Button ButtonToSubscribe;
         public GameObject Interface;
         public bool stateInterface = false;
 

@@ -13,8 +13,6 @@ namespace SmartEl
 {
     public class Client : MonoBehaviour
     {
-        public Button Button;
-
         // public Text host;
         public GameObject Spawner;
         public Spawner spawnerComponent;
@@ -28,13 +26,14 @@ namespace SmartEl
             Screen.SetResolution(960, 540, false, 60);
             spawnerComponent = Spawner.GetComponent<Spawner>();
             UIControllerScript = UIControllerObject.GetComponent<UIController>();
-            Button.onClick.AddListener(Subscribe);
+            UIControllerScript.ButtonToSubscribe.onClick.AddListener(Subscribe);
             UIControllerScript.ButtonToRequestHost.onClick.AddListener(_tryRequestHost);
             UIControllerScript.ButtonToRequestGuest.onClick.AddListener(_tryRequestGuest);
         }
 
         private void Subscribe()
         {
+            print("ASDSAD");
             var clientId = Guid.NewGuid().ToString();
             // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
             ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
@@ -109,15 +108,16 @@ namespace SmartEl
         {
             print("Sdafasfdfd");
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Host, UIControllerScript.Password.text))));
-            connect["destination"] = "/app/register";
+            connect["destination"] = "/app/changeRole";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
         
         private void _tryRequestGuest()
         {
+            print("Sdafasfdfd2");
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Guest, ""))));
-            connect["destination"] = "/app/register";
+            connect["destination"] = "/app/changeRole";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
