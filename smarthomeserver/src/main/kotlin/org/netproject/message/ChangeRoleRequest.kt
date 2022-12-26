@@ -2,9 +2,9 @@ package org.netproject.message
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class Message<T>(
+data class ChangeRoleRequest (
         @JsonProperty
-        val key: String,
+        val roleType: Int,
         @JsonProperty
-        val payload: T
+        val password: String
 )
