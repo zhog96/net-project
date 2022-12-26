@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -6,10 +7,10 @@ namespace SmartEl
 {
     public class SmartDoor : MonoBehaviour
     {
+        public string Id = Guid.NewGuid().ToString();
         public Animator openandclose;
         public bool open;
         public Transform Player;
-
         void Start()
         {
             GameObject[] gos;
