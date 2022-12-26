@@ -57,8 +57,10 @@ class PersonController(
     }
 
     @MessageMapping("/updatePlayer")
-    fun updatePlayer(message: Message<Player>) {
-        homeState.players.update(message.key) { copy(player = message.payload) }
+    fun updatePlayer(
+            @Headers headers: MessageHeaderAccessor,
+            @Payload message: Message<Player>) {
+        homeState.players.update(headers.sessionId) { copy(player = message.payload) }
     }
 
     @Scheduled(fixedRate = 20)
