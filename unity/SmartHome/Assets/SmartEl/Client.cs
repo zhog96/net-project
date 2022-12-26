@@ -107,9 +107,9 @@ namespace SmartEl
         
         private void _tryRequestHost()
         {
-            print("qweqweqwe");
+            print("Sdafasfdfd");
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Host, UIControllerScript.Password.text))));
-            connect["destination"] = "/app/changeRole";
+            connect["destination"] = "/app/register";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
@@ -117,7 +117,7 @@ namespace SmartEl
         private void _tryRequestGuest()
         {
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Guest, ""))));
-            connect["destination"] = "/app/changeRole";
+            connect["destination"] = "/app/register";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
