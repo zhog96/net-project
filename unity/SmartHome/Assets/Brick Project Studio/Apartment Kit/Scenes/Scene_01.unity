@@ -42920,7 +42920,7 @@ MonoBehaviour:
   Button: {fileID: 1789701049}
   Spawner: {fileID: 606715245}
   spawnerComponent: {fileID: 0}
-  UIControllerObject: {fileID: 0}
+  UIControllerObject: {fileID: 1187734249}
   UIControllerScript: {fileID: 0}
 --- !u!4 &1356391866
 Transform:

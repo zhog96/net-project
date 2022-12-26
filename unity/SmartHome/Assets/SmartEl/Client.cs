@@ -107,6 +107,7 @@ namespace SmartEl
         
         private void _tryRequestHost()
         {
+            print("Sdafasfdfd");
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<RoleRequest>(id, new RoleRequest(RolesEnum.Host, UIControllerScript.Password.text))));
             connect["destination"] = "/app/register";
             var serializer = new StompMessageSerializer();
