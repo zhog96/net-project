@@ -37,6 +37,25 @@ namespace SmartEl
 
         private void FixedUpdate()
         {
+            var toDelete = _anotherPlayers.Keys.Where(playerKey =>
+            {
+                var flag = false;
+                foreach (var player in _players)
+                {
+                    if (player.id.Equals(playerKey))
+                    {
+                        flag = true;
+                    }
+                }
+                return !flag;
+            });
+            foreach (var playerKey in toDelete)
+            {
+                var playerObject = _anotherPlayers[playerKey].player;
+                _anotherPlayers.Remove(playerKey);
+                Destroy(playerObject);
+            }
+            
             foreach (var player in _players)
             {
                 if (!_anotherPlayers.ContainsKey(player.id))
@@ -81,7 +100,6 @@ namespace SmartEl
 
         public void UpdatePlayers(DtoPlayer[] serverPlayers)
         {
-            print(serverPlayers.ToList());
             _players = serverPlayers;
         }
     }

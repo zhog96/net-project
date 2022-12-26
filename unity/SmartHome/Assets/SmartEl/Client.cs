@@ -77,6 +77,7 @@ namespace SmartEl
                 if (e.Data.Contains("/topic/players") && id != null)
                 {
                     {
+                        // print(body);
                         var message = JsonUtility.FromJson<Message<List<DtoPlayer>>>(body);
                         spawnerComponent.UpdatePlayers(message.payload.Where(p => p.id != id).ToArray());
                     }

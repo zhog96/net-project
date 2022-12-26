@@ -45,7 +45,9 @@ class PersonController(
             @Headers headers: MessageHeaderAccessor,
             @Payload message: Message<ChangeRoleRequest>
     ): Message<String> = message.payload.let {
-        Message(message.key, auth.byPassword(headers.sessionId, it.password, Companion.byId(it.roleType)).toString())
+        val a = Message(message.key, auth.byPassword(headers.sessionId, it.password, Companion.byId(it.roleType)).toString())
+        println(homeState.players.values.toList())
+        a
     }
 
     @MessageMapping("/quit")
@@ -67,7 +69,7 @@ class PersonController(
     fun getPlayers() {
         simpMessagingTemplate.convertAndSend(
                 "/topic/players",
-                Message(ALL.ordinal.toString(), homeState.players.values.map { it.player })
+                Message(ALL.ordinal.toString(), homeState.players.values.mapNotNull { it.player })
         )
     }
 

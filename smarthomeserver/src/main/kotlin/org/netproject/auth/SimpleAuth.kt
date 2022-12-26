@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class SimpleAuth(private val homeState: HomeState) : Auth {
-    private val hostPassword = "Наруто"
+    private val hostPassword = "Naruto"
 
     override fun byPassword(sessionId: String, password: String, role: Roles): Boolean {
+        println(password)
         val authed = when (role) {
             HOST -> password == hostPassword
             else -> true
