@@ -7,14 +7,18 @@ namespace SmartEl
 {
     public class SmartDoor : MonoBehaviour
     {
-        public string Id = Guid.NewGuid().ToString();
+        public string Id;
         public Animator openandclose;
         public bool open;
         public Transform Player;
+        public GameObject WsClientObject;
+        public Client WsClientScript;
         void Start()
         {
             GameObject[] gos;
             gos = GameObject.FindGameObjectsWithTag("Player");
+            WsClientObject = GameObject.Find("Client");
+            WsClientScript = WsClientObject.GetComponent<Client>();
             Player = gos[0].transform;
             open = false;
             if (TryGetComponent(out UnityEngine.Animator openandclose))
@@ -23,36 +27,36 @@ namespace SmartEl
             }
         }
 
-        void Update()
+        void FixedUpdate()
         {
             float dist = Vector3.Distance(Player.position, transform.position);
             if (dist < 3)
             {
                 if (open == false)
                 {
-                    StartCoroutine(opening());
+                    WsClientScript.SendDoorEvent(Id, true);
                 }
             }
             else
             {
                 if (open)
                 {
-                    StartCoroutine(closing());
+                    WsClientScript.SendDoorEvent(Id, false);
                 }
             }
         }
 
-        IEnumerator opening()
+        public IEnumerator opening()
         {
-            print("you are opening the door");
+            print("opening the door: " + Id);
             openandclose.Play("Opening");
             open = true;
             yield return new WaitForSeconds(.5f);
         }
 
-        IEnumerator closing()
+        public IEnumerator closing()
         {
-            print("you are closing the door");
+            print("closing the door: " + Id);
             openandclose.Play("Closing");
             open = false;
             yield return new WaitForSeconds(.5f);

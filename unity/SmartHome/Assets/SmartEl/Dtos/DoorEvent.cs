@@ -7,13 +7,13 @@ namespace SmartEl.Dtos
     {
         public string doorID;
         public string playerId;
-        public bool inArea;
+        public bool needOpen;
 
-        public DoorEvent(string doorID, string playerId, bool inArea)
+        public DoorEvent(string doorID, string playerId, bool needOpen)
         {
             this.doorID = doorID;
             this.playerId = playerId;
-            this.inArea = inArea;
+            this.needOpen = needOpen;
         }
     }
 }

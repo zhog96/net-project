@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - AnotherPlayer
+  - SmartDoor
   layers:
   - Default
   - TransparentFX

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using SmartEl.Dtos;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using WebSocketSharp;
-using Object = System.Object;
 
 namespace SmartEl
 {
@@ -18,6 +14,10 @@ namespace SmartEl
         public Spawner spawnerComponent;
         public GameObject UIControllerObject;
         public UIController UIControllerScript;
+        public GameObject[] SmartDoorsObjects;
+        public SmartDoor[] SmartDoors;
+        public Dictionary<string, SmartDoor> SmartDoorsMap = new();
+        public DtoDoor[] DtoDoors = {};
         WebSocket ws;
         private string id;
 
@@ -29,6 +29,15 @@ namespace SmartEl
             UIControllerScript.ButtonToSubscribe.onClick.AddListener(Subscribe);
             UIControllerScript.ButtonToRequestHost.onClick.AddListener(_tryRequestHost);
             UIControllerScript.ButtonToRequestGuest.onClick.AddListener(_tryRequestGuest);
+            
+            SmartDoorsObjects = GameObject.FindGameObjectsWithTag("SmartDoor");
+            SmartDoors = new SmartDoor[SmartDoorsObjects.Length];
+            for (int i = 0; i < SmartDoorsObjects.Length; i++)
+            {
+                SmartDoors[i] = SmartDoorsObjects[i].GetComponent<SmartDoor>();
+                SmartDoorsMap.Add(SmartDoors[i].Id, SmartDoors[i]);
+                print(SmartDoors[i].Id + " " + SmartDoors[i].open);
+            }
         }
 
         private void Subscribe()
@@ -36,6 +45,7 @@ namespace SmartEl
             print("ASDSAD");
             var clientId = Guid.NewGuid().ToString();
             // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
+            // ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
             ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
             ws.OnOpen += (sender, e) =>
             {
@@ -52,6 +62,10 @@ namespace SmartEl
 
                 sub["id"] = "sub-" + clientId + "players";
                 sub["destination"] = "/topic/players";
+                ws.Send(serializer.Serialize(sub));
+                
+                sub["id"] = "sub-" + clientId + "doors";
+                sub["destination"] = "/topic/doors";
                 ws.Send(serializer.Serialize(sub));
             };
             ws.OnMessage += (sender, e) =>
@@ -82,6 +96,15 @@ namespace SmartEl
                         spawnerComponent.UpdatePlayers(message.payload.Where(p => p.id != id).ToArray());
                     }
                 }
+                
+                if (e.Data.Contains("/topic/doors") && id != null)
+                {
+                    {
+                        // print(body);
+                        var message = JsonUtility.FromJson<Message<List<DtoDoor>>>(body);
+                        DtoDoors = message.payload.ToArray();
+                    }
+                }
             };
             ws.OnError += (sender, e) =>
                 print("Error: " + e.Exception);
@@ -95,6 +118,18 @@ namespace SmartEl
             {
                 NoParamaterOnclick();
             }
+
+            UpdateDoors();
+        }
+        
+        public void SendDoorEvent(string doorId, bool inArea)
+        {
+            print("send door event");
+            DoorEvent doorEvent = new DoorEvent(doorId, id, inArea);
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DoorEvent>(id, doorEvent)));
+            connect["destination"] = "/app/changeDoorState";
+            var serializer = new StompMessageSerializer();
+            ws.Send(serializer.Serialize(connect));
         }
 
         private void _auth(string clientId)
@@ -139,6 +174,27 @@ namespace SmartEl
                 connect["destination"] = "/app/updatePlayer";
                 StompMessageSerializer serializer = new StompMessageSerializer();
                 ws.Send(serializer.Serialize(connect));
+            }
+        }
+        
+        private void UpdateDoors()
+        {
+            for (int i = 0; i < DtoDoors.Length; i++)
+            {
+                var smartDoorDto = DtoDoors[i];
+                var smartDoor = SmartDoorsMap[smartDoorDto.doorID];
+                if (smartDoorDto.isOpen.Equals(smartDoor.open))
+                {
+                    continue;
+                }
+                if (smartDoorDto.isOpen.Equals(true) && smartDoor.open.Equals(false))
+                {
+                    StartCoroutine(smartDoor.opening());
+                }
+                if (smartDoorDto.isOpen.Equals(false) && smartDoor.open.Equals(true))
+                {
+                    StartCoroutine(smartDoor.closing());
+                }
             }
         }
 
