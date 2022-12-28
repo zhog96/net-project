@@ -9,6 +9,7 @@ namespace SmartEl
     {
         public string Id;
         public Animator openandclose;
+        public bool forAll;
         public bool open;
         public Transform Player;
         public GameObject WsClientObject;
