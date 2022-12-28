@@ -26,7 +26,7 @@ namespace SmartEl
             {
                 IsLight = true;
                 Light = light;
-                Light.enabled = true;
+                Light.enabled = false;
             }
 
             WsClientObject = GameObject.Find("Client");
