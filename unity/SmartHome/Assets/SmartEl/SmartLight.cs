@@ -6,10 +6,12 @@ namespace SmartEl
 {
     public class SmartLight : MonoBehaviour
     {
+        public string Id;
         private Light Light;
-        private MeshRenderer MeshRenderer;
         private bool IsLight;
         public Transform Player;
+        public GameObject WsClientObject;
+        public Client WsClientScript;
         // Start is called before the first frame update
         void Start()
         {
@@ -27,13 +29,8 @@ namespace SmartEl
                 Light.enabled = true;
             }
 
-            if (TryGetComponent(out UnityEngine.MeshRenderer meshRenderer))
-            {
-                IsLight = false;
-                MeshRenderer = meshRenderer;
-                MeshRenderer.enabled = true;
-            }
-            
+            WsClientObject = GameObject.Find("Client");
+            WsClientScript = WsClientObject.GetComponent<Client>();
         }
 
         // Update is called once per frame
@@ -46,60 +43,32 @@ namespace SmartEl
                 {
                     if (Light.enabled == false)
                     {
-                        StartCoroutine(TurnOnLight());
+                        WsClientScript.SendLightEvent(Id, true);
                     }
                 }
                 else
                 {
                     if (Light.enabled == true)
                     {
-                        StartCoroutine(TurnOffLight());
-                    }
-                }
-            }
-            else
-            {
-                if (dist < 10)
-                {
-                    if (MeshRenderer.enabled == false)
-                    {
-                        StartCoroutine(TurnOnMesh());
-                    }
-                }
-                else
-                {
-                    if (MeshRenderer.enabled == true)
-                    {
-                        StartCoroutine(TurnOffMesh());
+                        WsClientScript.SendLightEvent(Id, false);
                     }
                 }
             }
         }
         
-        IEnumerator TurnOnLight()
+        public IEnumerator TurnOnLight()
         {
             print("you are turn on light");
             Light.enabled = true;
             yield return new WaitForSeconds(.5f);
         }
         
-        IEnumerator TurnOffLight()
+        public IEnumerator TurnOffLight()
         {
             print("you are turn on light");
             Light.enabled = false;
             yield return new WaitForSeconds(.5f);
         }
         
-        IEnumerator TurnOnMesh()
-        {
-            MeshRenderer.enabled = true;
-            yield return new WaitForSeconds(.5f);
-        }
-        
-        IEnumerator TurnOffMesh()
-        {
-            MeshRenderer.enabled = false;
-            yield return new WaitForSeconds(.5f);
-        }
     }
 }

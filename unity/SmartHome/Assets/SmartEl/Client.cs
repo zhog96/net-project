@@ -18,6 +18,10 @@ namespace SmartEl
         public SmartDoor[] SmartDoors;
         public Dictionary<string, SmartDoor> SmartDoorsMap = new();
         public DtoDoor[] DtoDoors = {};
+        public GameObject[] SmartLightsObjects;
+        public SmartLight[] SmartLights;
+        public Dictionary<string, SmartLight> SmartLightsMap = new();
+        public DtoLight[] DtoLights = {};
         WebSocket ws;
         private string id;
 
@@ -37,6 +41,15 @@ namespace SmartEl
                 SmartDoors[i] = SmartDoorsObjects[i].GetComponent<SmartDoor>();
                 SmartDoorsMap.Add(SmartDoors[i].Id, SmartDoors[i]);
                 print(SmartDoors[i].Id + " " + SmartDoors[i].open);
+            }
+            
+            SmartLightsObjects = GameObject.FindGameObjectsWithTag("SmartLight");
+            SmartLights = new SmartLight[SmartLightsObjects.Length];
+            for (int i = 0; i < SmartLightsObjects.Length; i++)
+            {
+                SmartLights[i] = SmartLightsObjects[i].GetComponent<SmartLight>();
+                SmartLightsMap.Add(SmartLights[i].Id, SmartLights[i]);
+                print(SmartLights[i].Id + " " + SmartLights[i].enabled);
             }
         }
 
@@ -66,6 +79,10 @@ namespace SmartEl
                 
                 sub["id"] = "sub-" + clientId + "doors";
                 sub["destination"] = "/topic/doors";
+                ws.Send(serializer.Serialize(sub));
+                
+                sub["id"] = "sub-" + clientId + "doors";
+                sub["destination"] = "/topic/lights";
                 ws.Send(serializer.Serialize(sub));
             };
             ws.OnMessage += (sender, e) =>
@@ -105,6 +122,15 @@ namespace SmartEl
                         DtoDoors = message.payload.ToArray();
                     }
                 }
+                
+                if (e.Data.Contains("/topic/lights") && id != null)
+                {
+                    {
+                        // print(body);
+                        var message = JsonUtility.FromJson<Message<List<DtoLight>>>(body);
+                        DtoLights = message.payload.ToArray();
+                    }
+                }
             };
             ws.OnError += (sender, e) =>
                 print("Error: " + e.Exception);
@@ -120,6 +146,7 @@ namespace SmartEl
             }
 
             UpdateDoors();
+            UpdateLights();
         }
         
         public void SendDoorEvent(string doorId, bool inArea)
@@ -128,6 +155,16 @@ namespace SmartEl
             DoorEvent doorEvent = new DoorEvent(doorId, id, inArea);
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DoorEvent>(id, doorEvent)));
             connect["destination"] = "/app/changeDoorState";
+            var serializer = new StompMessageSerializer();
+            ws.Send(serializer.Serialize(connect));
+        }
+        
+        public void SendLightEvent(string doorId, bool inArea)
+        {
+            print("send door event");
+            DoorEvent doorEvent = new DoorEvent(doorId, id, inArea);
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DoorEvent>(id, doorEvent)));
+            connect["destination"] = "/app/changeLightState";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
@@ -194,6 +231,27 @@ namespace SmartEl
                 if (smartDoorDto.isOpen.Equals(false) && smartDoor.open.Equals(true))
                 {
                     StartCoroutine(smartDoor.closing());
+                }
+            }
+        }
+        
+        private void UpdateLights()
+        {
+            for (int i = 0; i < DtoLights.Length; i++)
+            {
+                var smartLightDto = DtoLights[i];
+                var smartLight = SmartLightsMap[smartLightDto.lightID];
+                if (smartLightDto.enable.Equals(smartLight.enabled))
+                {
+                    continue;
+                }
+                if (smartLightDto.enable.Equals(true) && smartLight.enabled.Equals(false))
+                {
+                    StartCoroutine(smartLight.TurnOnLight());
+                }
+                if (smartLightDto.enable.Equals(false) && smartLight.enabled.Equals(true))
+                {
+                    StartCoroutine(smartLight.TurnOffLight());
                 }
             }
         }
