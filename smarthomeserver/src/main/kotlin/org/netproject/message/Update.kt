@@ -10,7 +10,5 @@ data class Update(
         @JsonProperty
         val y: Double,
         @JsonProperty
-        val z: Double,
-        @JsonProperty
-        val open: Boolean
+        val z: Double
 )

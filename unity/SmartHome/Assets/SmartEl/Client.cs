@@ -58,7 +58,7 @@ namespace SmartEl
         {
             var clientId = Guid.NewGuid().ToString();
             // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
-            ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
+            // ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
             // ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
             ws.OnOpen += (sender, e) =>
             {
@@ -133,8 +133,6 @@ namespace SmartEl
                 print("Error: " + e.Exception);
             ws.Connect();
             _auth(clientId);
-            SendDoorUpdates();
-            SendLightUpdates();
         }
 
         public void FixedUpdate()
@@ -143,6 +141,8 @@ namespace SmartEl
             {
                 NoParamaterOnclick();
             }
+            SendDoorUpdates();
+            SendLightUpdates();
             UpdateDoors();
             UpdateLights();
         }
@@ -153,7 +153,7 @@ namespace SmartEl
             foreach (var door in SmartDoors)
             {
                 var pos = door.transform.position;
-                doorUpdates.Add(new Updates(door.Id, pos.x, pos.y, pos.z, door.open));
+                doorUpdates.Add(new Updates(door.Id, pos.x, pos.y, pos.z));
             }
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, doorUpdates)));
             connect["destination"] = "/app/updateDoors";
@@ -167,7 +167,7 @@ namespace SmartEl
             foreach (var smartLight in SmartLights)
             {
                 var pos = smartLight.transform.position;
-                lightUpdates.Add(new Updates(smartLight.Id, pos.x, pos.y, pos.z, smartLight.Light.enabled));
+                lightUpdates.Add(new Updates(smartLight.Id, pos.x, pos.y, pos.z));
             }
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, lightUpdates)));
             connect["destination"] = "/app/updateLights";
