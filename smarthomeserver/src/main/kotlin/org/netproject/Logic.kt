@@ -14,10 +14,10 @@ class Logic(private val homeState: HomeState) {
                 Position.dist(player, door) < 3
             }.let { homeState.doors.update(key) { copy(open = it) } }
         }
-        homeState.lights.forEach { (key, door) ->
+        homeState.lights.forEach { (key, light) ->
             homeState.players.values.mapNotNull { it.player }.any { player ->
-                Position.dist(player, door) < 8
-            }.let { homeState.doors.update(key) { copy(open = it) } }
+                Position.dist(player, light) < 8
+            }.let { homeState.lights.update(key) { copy(open = it) } }
         }
     }
 }

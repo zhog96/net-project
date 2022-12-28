@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class DoorDto(
         @JsonProperty
-        val isOpen: Boolean,
+        val open: Boolean,
         @JsonProperty
         val doorID: String
 )

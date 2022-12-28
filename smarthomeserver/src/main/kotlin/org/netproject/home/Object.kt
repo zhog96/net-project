@@ -2,7 +2,7 @@ package org.netproject.home
 
 import org.netproject.Position
 
-data class Door(
+data class Object(
         val open: Boolean,
         override val x: Double,
         override val y: Double,

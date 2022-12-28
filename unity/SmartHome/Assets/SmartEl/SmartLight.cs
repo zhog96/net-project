@@ -7,7 +7,7 @@ namespace SmartEl
     public class SmartLight : MonoBehaviour
     {
         public string Id;
-        private Light Light;
+        public Light Light;
         private bool IsLight;
         public Transform Player;
         public GameObject WsClientObject;

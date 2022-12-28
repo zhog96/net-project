@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class LightDto(
         @JsonProperty
-        val isOpen: Boolean,
+        val enable: Boolean,
         @JsonProperty
         val lightID: String
 )

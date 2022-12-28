@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap
 @Service
 class HomeState {
     val players = ConcurrentHashMap<String, Session>()
-    val doors = ConcurrentHashMap<String, Door>()
-    val lights = ConcurrentHashMap<String, Door>()
+    val doors = ConcurrentHashMap<String, Object>()
+    val lights = ConcurrentHashMap<String, Object>()
 
     fun quit(key: String) {
         try {

@@ -1,7 +1,7 @@
 package org.netproject
 
 import org.netproject.auth.Auth
-import org.netproject.home.Door
+import org.netproject.home.Object
 import org.netproject.home.HomeState
 import org.netproject.home.HomeState.Companion.update
 import org.netproject.home.Roles.*
@@ -43,7 +43,7 @@ class Controller(
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
                 if (!homeState.doors.contains(it.id)) {
-                    homeState.doors[it.id] = Door(it.open, it.x, it.y, it.z)
+                    homeState.doors[it.id] = Object(it.open, it.x, it.y, it.z)
                 } else {
                     homeState.doors.update(it.id) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
                 }
@@ -59,7 +59,7 @@ class Controller(
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
                 if (!homeState.lights.contains(it.id)) {
-                    homeState.lights[it.id] = Door(it.open, it.x, it.y, it.z)
+                    homeState.lights[it.id] = Object(it.open, it.x, it.y, it.z)
                 } else {
                     homeState.lights.update(it.id) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
                 }
@@ -107,7 +107,7 @@ class Controller(
                 Message(ALL.ordinal.toString(), homeState.doors.map { (doorID, door) ->
                     DoorDto(
                             doorID = doorID,
-                            isOpen = door.open
+                            open = door.open
                     )
                 })
         )
@@ -120,7 +120,7 @@ class Controller(
                 Message(ALL.ordinal.toString(), homeState.lights.map { (lightID, door) ->
                     LightDto(
                             lightID = lightID,
-                            isOpen = door.open
+                            enable = door.open
                     )
                 })
         )
