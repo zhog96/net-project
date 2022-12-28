@@ -44,8 +44,6 @@ class Controller(
             message.payload.forEach {
                 if (!homeState.doors.contains(it.id)) {
                     homeState.doors[it.id] = Object(false, it.x, it.y, it.z)
-                } else {
-                    homeState.doors.update(it.id) { copy(x = it.x, y = it.y, z = it.z) }
                 }
             }
         }
@@ -57,11 +55,11 @@ class Controller(
             @Payload message: Message<List<Update>>
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
-            message.payload.forEach {
-                if (!homeState.lights.contains(it.id)) {
-                    homeState.lights[it.id] = Object(false, it.x, it.y, it.z)
-                } else {
-                    homeState.lights.update(it.id) { copy(x = it.x, y = it.y, z = it.z) }
+            if (homeState.lights.isEmpty()) {
+                message.payload.forEach {
+                    if (!homeState.lights.contains(it.id)) {
+                        homeState.lights[it.id] = Object(false, it.x, it.y, it.z)
+                    }
                 }
             }
         }
