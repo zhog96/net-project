@@ -36,24 +36,6 @@ namespace SmartEl
         // Update is called once per frame
         void Update()
         {
-            float dist = Vector3.Distance(Player.position, transform.position);
-            if (IsLight)
-            {
-                if (dist < 8)
-                {
-                    if (Light.enabled == false)
-                    {
-                        WsClientScript.SendLightEvent(Id, true);
-                    }
-                }
-                else
-                {
-                    if (Light.enabled == true)
-                    {
-                        WsClientScript.SendLightEvent(Id, false);
-                    }
-                }
-            }
         }
         
         public IEnumerator TurnOnLight()

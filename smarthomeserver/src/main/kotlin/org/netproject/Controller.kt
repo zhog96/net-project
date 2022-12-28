@@ -51,6 +51,22 @@ class Controller(
         }
     }
 
+    @MessageMapping("/updateLights")
+    fun updateLights(
+            @Headers headers: MessageHeaderAccessor,
+            @Payload message: Message<List<DoorUpdate>>
+    ) {
+        if (homeState.players[headers.sessionId]?.role == HOST) {
+            message.payload.forEach {
+                if (!homeState.doors.contains(it.doorID)) {
+                    homeState.doors[it.doorID] = Door(it.open, it.x, it.y, it.z)
+                } else {
+                    homeState.doors.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
+                }
+            }
+        }
+    }
+
     @MessageMapping("/changeRole")
     @SendTo("/topic/id")
     fun changeRole(

@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 class HomeState {
     val players = ConcurrentHashMap<String, Session>()
     val doors = ConcurrentHashMap<String, Door>()
+    val lights = ConcurrentHashMap<String, Door>()
 
     fun quit(key: String) {
         try {

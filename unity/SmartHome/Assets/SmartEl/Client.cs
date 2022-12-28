@@ -146,6 +146,7 @@ namespace SmartEl
                 NoParamaterOnclick();
             }
             SendDoorUpdates();
+            SendLightUpdates();
             UpdateDoors();
             UpdateLights();
         }
@@ -164,12 +165,16 @@ namespace SmartEl
             ws.Send(serializer.Serialize(connect));
         }
 
-        public void SendLightEvent(string doorId, bool inArea)
+        public void SendLightUpdates()
         {
-            print("send door event");
-            DoorEvent doorEvent = new DoorEvent(doorId, id, inArea);
-            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<DoorEvent>(id, doorEvent)));
-            connect["destination"] = "/app/changeLightState";
+            List<DoorUpdates> lightUpdates = new List<DoorUpdates>();
+            foreach (var smartLight in SmartLights)
+            {
+                var pos = smartLight.transform.position;
+                lightUpdates.Add(new DoorUpdates(smartLight.Id, pos.x, pos.y, pos.z, smartLight.enabled));
+            }
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<DoorUpdates>>(id, lightUpdates)));
+            connect["destination"] = "/app/updateLight";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
         }
@@ -225,7 +230,6 @@ namespace SmartEl
             {
                 var smartDoorDto = DtoDoors[i];
                 var smartDoor = SmartDoorsMap[smartDoorDto.doorID];
-                print(smartDoorDto.open + "|" + smartDoor.open);
                 if (smartDoorDto.open.Equals(smartDoor.open))
                 {
                     continue;
