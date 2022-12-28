@@ -133,6 +133,8 @@ namespace SmartEl
                 print("Error: " + e.Exception);
             ws.Connect();
             _auth(clientId);
+            SendDoorUpdates();
+            SendLightUpdates();
         }
 
         public void FixedUpdate()
@@ -141,8 +143,6 @@ namespace SmartEl
             {
                 NoParamaterOnclick();
             }
-            SendDoorUpdates();
-            SendLightUpdates();
             UpdateDoors();
             UpdateLights();
         }
