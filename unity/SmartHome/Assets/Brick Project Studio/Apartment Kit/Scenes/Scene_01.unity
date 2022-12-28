@@ -657,12 +657,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16559082}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &17389044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4014,7 +4017,7 @@ GameObject:
   - component: {fileID: 139413351}
   m_Layer: 0
   m_Name: Point Light (11)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4108,7 +4111,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 8
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &140246960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4952,12 +4958,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164510093}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &168822089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6132,7 +6141,7 @@ GameObject:
   - component: {fileID: 188666691}
   m_Layer: 0
   m_Name: Point Light (13)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6226,7 +6235,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 9
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &190143116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9656,12 +9668,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305996095}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &309767462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14114,7 +14129,7 @@ GameObject:
   - component: {fileID: 451836660}
   m_Layer: 0
   m_Name: Point Light (2)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14208,7 +14223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 3
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &452775292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15604,7 +15622,7 @@ GameObject:
   - component: {fileID: 495348335}
   m_Layer: 0
   m_Name: Point Light
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15698,7 +15716,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 5
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &499134039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26935,12 +26956,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883906379}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!4 &885251769 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1017606091530846216, guid: c5be39b879c83f54d9bbfebe68c809be, type: 3}
@@ -32234,7 +32258,7 @@ GameObject:
   - component: {fileID: 1056287680}
   m_Layer: 0
   m_Name: Point Light (1)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32328,7 +32352,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 4
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &1056535189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42747,6 +42774,9 @@ MonoBehaviour:
   SmartDoorsObjects: []
   SmartDoors: []
   DtoDoors: []
+  SmartLightsObjects: []
+  SmartLights: []
+  DtoLights: []
 --- !u!4 &1356391866
 Transform:
   m_ObjectHideFlags: 0
@@ -56682,7 +56712,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 7
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &1778934450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57171,7 +57204,7 @@ GameObject:
   - component: {fileID: 1791590344}
   m_Layer: 0
   m_Name: Point Light (10)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57265,7 +57298,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 7
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &1792337722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59635,7 +59671,7 @@ GameObject:
   - component: {fileID: 1854913084}
   m_Layer: 0
   m_Name: Point Light (3)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59729,7 +59765,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 2
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &1856122723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64341,12 +64380,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024079810}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!1001 &2025276989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66768,7 +66810,7 @@ GameObject:
   - component: {fileID: 2140109820}
   m_Layer: 0
   m_Name: Point Light (4)
-  m_TagString: Untagged
+  m_TagString: SmartLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66862,7 +66904,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 218cab554dd944743941b2d176fed17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Id: 1
   Player: {fileID: 0}
+  WsClientObject: {fileID: 0}
+  WsClientScript: {fileID: 0}
 --- !u!4 &2141092959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7024417035911227579, guid: bd7983b1a49044746ab3ec58a61d0c4a, type: 3}
