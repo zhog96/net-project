@@ -1585,6 +1585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 1
   openandclose: {fileID: 51182741}
+  forAll: 1
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -4001,6 +4002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 8
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -5783,6 +5785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 5
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -14117,6 +14120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 6
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -21940,6 +21944,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 4
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -23103,6 +23108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 2
   openandclose: {fileID: 761635099}
+  forAll: 1
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -30523,6 +30529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 90a94bc0-7d7a-4ade-b8d2-a5daf4c734e7
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -41330,6 +41337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 3
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
@@ -57727,6 +57735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 7
   openandclose: {fileID: 0}
+  forAll: 0
   open: 0
   Player: {fileID: 0}
   WsClientObject: {fileID: 0}
