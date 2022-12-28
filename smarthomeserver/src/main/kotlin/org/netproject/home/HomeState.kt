@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Service
 class HomeState {
     val players = ConcurrentHashMap<String, Session>()
+    val doors = ConcurrentHashMap<String, Door>()
 
     fun quit(key: String) {
         try {
@@ -14,7 +15,7 @@ class HomeState {
     }
 
     companion object {
-        fun ConcurrentHashMap<String, Session>.update(key: String, body: Session.() -> Session) {
+        fun <T> ConcurrentHashMap<String, T>.update(key: String, body: T.() -> T) {
             this[key] = this[key]?.body() ?: return
         }
     }

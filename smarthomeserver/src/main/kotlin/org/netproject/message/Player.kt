@@ -1,6 +1,7 @@
 package org.netproject.message
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.netproject.Position
 
 data class Player(
         @JsonProperty
@@ -8,11 +9,11 @@ data class Player(
         @JsonProperty
         val uid: String,
         @JsonProperty
-        val x: Double,
+        override val x: Double,
         @JsonProperty
-        val y: Double,
+        override val y: Double,
         @JsonProperty
-        val z: Double,
+        override val z: Double,
         @JsonProperty
         val rx: Double,
         @JsonProperty
@@ -21,4 +22,4 @@ data class Player(
         val rz: Double,
         @JsonProperty
         val w: Double,
-)
+): Position

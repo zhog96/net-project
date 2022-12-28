@@ -29,21 +29,6 @@ namespace SmartEl
 
         void FixedUpdate()
         {
-            float dist = Vector3.Distance(Player.position, transform.position);
-            if (dist < 3)
-            {
-                if (open == false)
-                {
-                    WsClientScript.SendDoorEvent(Id, true);
-                }
-            }
-            else
-            {
-                if (open)
-                {
-                    WsClientScript.SendDoorEvent(Id, false);
-                }
-            }
         }
 
         public IEnumerator opening()

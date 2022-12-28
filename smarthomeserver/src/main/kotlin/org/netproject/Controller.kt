@@ -1,14 +1,12 @@
 package org.netproject
 
 import org.netproject.auth.Auth
-import org.netproject.auth.SimpleAuth
+import org.netproject.home.Door
 import org.netproject.home.HomeState
 import org.netproject.home.HomeState.Companion.update
 import org.netproject.home.Roles.*
 import org.netproject.home.Session
-import org.netproject.message.ChangeRoleRequest
-import org.netproject.message.Message
-import org.netproject.message.Player
+import org.netproject.message.*
 import org.springframework.messaging.handler.annotation.Headers
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -18,11 +16,9 @@ import org.springframework.messaging.support.MessageHeaderAccessor
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Controller
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
-import javax.management.relation.Role
 
 @Controller
-class PersonController(
+class Controller(
         private val simpMessagingTemplate: SimpMessagingTemplate,
         private val homeState: HomeState,
         private val auth: Auth
@@ -39,15 +35,29 @@ class PersonController(
         return Message(message.key, token)
     }
 
+    @MessageMapping("/updateDoors")
+    fun updateDoors(
+            @Headers headers: MessageHeaderAccessor,
+            @Payload message: Message<List<DoorUpdate>>
+    ) {
+        if (homeState.players[headers.sessionId]?.role == HOST) {
+            message.payload.forEach {
+                if (!homeState.doors.contains(it.doorID)) {
+                    homeState.doors[it.doorID] = Door(it.open, it.x, it.y, it.z)
+                } else {
+                    homeState.doors.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
+                }
+            }
+        }
+    }
+
     @MessageMapping("/changeRole")
     @SendTo("/topic/id")
     fun changeRole(
             @Headers headers: MessageHeaderAccessor,
             @Payload message: Message<ChangeRoleRequest>
     ): Message<String> = message.payload.let {
-        val a = Message(message.key, auth.byPassword(headers.sessionId, it.password, Companion.byId(it.roleType)).toString())
-        println(homeState.players.values.toList())
-        a
+        Message(message.key, auth.byPassword(headers.sessionId, it.password, Companion.byId(it.roleType)).toString())
     }
 
     @MessageMapping("/quit")
@@ -65,11 +75,25 @@ class PersonController(
         homeState.players.update(headers.sessionId) { copy(player = message.payload) }
     }
 
+
     @Scheduled(fixedRate = 20)
     fun getPlayers() {
         simpMessagingTemplate.convertAndSend(
                 "/topic/players",
                 Message(ALL.ordinal.toString(), homeState.players.values.mapNotNull { it.player })
+        )
+    }
+
+    @Scheduled(fixedRate = 20)
+    fun getDoors() {
+        simpMessagingTemplate.convertAndSend(
+                "/topic/doors",
+                Message(ALL.ordinal.toString(), homeState.doors.map { (doorID, door) ->
+                    DoorDto(
+                            doorID = doorID,
+                            isOpen = door.open
+                    )
+                })
         )
     }
 

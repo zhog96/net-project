@@ -6,12 +6,12 @@ namespace SmartEl.Dtos
     public class DtoDoor
     {
         public string doorID;
-        public bool isOpen;
+        public bool open;
 
-        public DtoDoor(string doorID, bool isOpen)
+        public DtoDoor(string doorID, bool open)
         {
             this.doorID = doorID;
-            this.isOpen = isOpen;
+            this.open = open;
         }
     }
 }
