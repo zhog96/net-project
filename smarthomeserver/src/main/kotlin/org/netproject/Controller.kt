@@ -41,9 +41,11 @@ class Controller(
             @Payload message: Message<List<Update>>
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
-            message.payload.forEach {
-                if (!homeState.doors.contains(it.id)) {
-                    homeState.doors[it.id] = Object(false, it.x, it.y, it.z)
+            if (homeState.doors.isEmpty()) {
+                message.payload.forEach {
+                    if (!homeState.doors.contains(it.id)) {
+                        homeState.doors[it.id] = Object(false, it.x, it.y, it.z)
+                    }
                 }
             }
         }
