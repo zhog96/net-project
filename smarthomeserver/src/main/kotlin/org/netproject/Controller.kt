@@ -38,7 +38,7 @@ class Controller(
     @MessageMapping("/updateDoors")
     fun updateDoors(
             @Headers headers: MessageHeaderAccessor,
-            @Payload message: Message<List<DoorUpdate>>
+            @Payload message: Message<List<Update>>
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
@@ -54,14 +54,14 @@ class Controller(
     @MessageMapping("/updateLights")
     fun updateLights(
             @Headers headers: MessageHeaderAccessor,
-            @Payload message: Message<List<DoorUpdate>>
+            @Payload message: Message<List<Update>>
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
-                if (!homeState.doors.contains(it.doorID)) {
-                    homeState.doors[it.doorID] = Door(it.open, it.x, it.y, it.z)
+                if (!homeState.lights.contains(it.doorID)) {
+                    homeState.lights[it.doorID] = Door(it.open, it.x, it.y, it.z)
                 } else {
-                    homeState.doors.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
+                    homeState.lights.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
                 }
             }
         }
@@ -112,6 +112,20 @@ class Controller(
                 })
         )
     }
+
+    @Scheduled(fixedRate = 20)
+    fun getLights() {
+        simpMessagingTemplate.convertAndSend(
+                "/topic/lights",
+                Message(ALL.ordinal.toString(), homeState.lights.map { (lightID, door) ->
+                    LightDto(
+                            lightID = lightID,
+                            isOpen = door.open
+                    )
+                })
+        )
+    }
+
 
     private val MessageHeaderAccessor.sessionId: String
         get() = getHeader("simpSessionId") as String
