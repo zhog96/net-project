@@ -44,7 +44,7 @@ class Controller(
             if (homeState.doors.isEmpty()) {
                 message.payload.forEach {
                     if (!homeState.doors.contains(it.id)) {
-                        homeState.doors[it.id] = Object(false, it.x, it.y, it.z)
+                        homeState.doors[it.id] = Object(false, it.level, it.x, it.y, it.z)
                     }
                 }
             }
@@ -60,7 +60,7 @@ class Controller(
             if (homeState.lights.isEmpty()) {
                 message.payload.forEach {
                     if (!homeState.lights.contains(it.id)) {
-                        homeState.lights[it.id] = Object(false, it.x, it.y, it.z)
+                        homeState.lights[it.id] = Object(false, it.level, it.x, it.y, it.z)
                     }
                 }
             }

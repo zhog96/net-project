@@ -58,8 +58,8 @@ namespace SmartEl
         {
             var clientId = Guid.NewGuid().ToString();
             // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
-            ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
-            // ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
+            // ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
+            ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
             ws.OnOpen += (sender, e) =>
             {
                 var serializer = new StompMessageSerializer();
@@ -154,11 +154,12 @@ namespace SmartEl
             foreach (var door in SmartDoors)
             {
                 var pos = door.transform.position;
-                doorUpdates.Add(new Updates(door.Id, pos.x, pos.y, pos.z));
+                doorUpdates.Add(new Updates(door.Id, pos.x, pos.y, pos.z, door.forAll ? RolesEnum.Guest : RolesEnum.Host));
             }
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, doorUpdates)));
             connect["destination"] = "/app/updateDoors";
             var serializer = new StompMessageSerializer();
+            print(serializer.Serialize(connect));
             ws.Send(serializer.Serialize(connect));
         }
 
@@ -168,7 +169,7 @@ namespace SmartEl
             foreach (var smartLight in SmartLights)
             {
                 var pos = smartLight.transform.position;
-                lightUpdates.Add(new Updates(smartLight.Id, pos.x, pos.y, pos.z));
+                lightUpdates.Add(new Updates(smartLight.Id, pos.x, pos.y, pos.z, RolesEnum.Guest));
             }
             var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, lightUpdates)));
             connect["destination"] = "/app/updateLights";
