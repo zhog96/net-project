@@ -153,13 +153,13 @@ namespace SmartEl
         
         public void SendDoorUpdates()
         {
-            List<DoorUpdates> doorUpdates = new List<DoorUpdates>();
+            List<Updates> doorUpdates = new List<Updates>();
             foreach (var door in SmartDoors)
             {
                 var pos = door.transform.position;
-                doorUpdates.Add(new DoorUpdates(door.Id, pos.x, pos.y, pos.z, door.open));
+                doorUpdates.Add(new Updates(door.Id, pos.x, pos.y, pos.z, door.open));
             }
-            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<DoorUpdates>>(id, doorUpdates)));
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, doorUpdates)));
             connect["destination"] = "/app/updateDoors";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));
@@ -167,13 +167,13 @@ namespace SmartEl
 
         public void SendLightUpdates()
         {
-            List<DoorUpdates> lightUpdates = new List<DoorUpdates>();
+            List<Updates> lightUpdates = new List<Updates>();
             foreach (var smartLight in SmartLights)
             {
                 var pos = smartLight.transform.position;
-                lightUpdates.Add(new DoorUpdates(smartLight.Id, pos.x, pos.y, pos.z, smartLight.enabled));
+                lightUpdates.Add(new Updates(smartLight.Id, pos.x, pos.y, pos.z, smartLight.enabled));
             }
-            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<DoorUpdates>>(id, lightUpdates)));
+            var connect = new StompMessage("SEND", JsonUtility.ToJson(new Message<List<Updates>>(id, lightUpdates)));
             connect["destination"] = "/app/updateLight";
             var serializer = new StompMessageSerializer();
             ws.Send(serializer.Serialize(connect));

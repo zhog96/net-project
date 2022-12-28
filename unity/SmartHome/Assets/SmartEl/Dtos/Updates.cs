@@ -3,17 +3,17 @@
 namespace SmartEl.Dtos
 {
     [Serializable]
-    public class DoorUpdates
+    public class Updates
     {
-        public string doorID;
+        public string id;
         public float x;
         public float y;
         public float z;
         public bool open;
 
-        public DoorUpdates(string doorID, float x, float y, float z, bool open)
+        public Updates(string id, float x, float y, float z, bool open)
         {
-            this.doorID = doorID;
+            this.id = id;
             this.x = x;
             this.y = y;
             this.z = z;

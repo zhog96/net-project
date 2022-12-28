@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Update(
         @JsonProperty
-        val doorID: String,
+        val id: String,
         @JsonProperty
         val x: Double,
         @JsonProperty

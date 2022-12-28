@@ -42,10 +42,10 @@ class Controller(
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
-                if (!homeState.doors.contains(it.doorID)) {
-                    homeState.doors[it.doorID] = Door(it.open, it.x, it.y, it.z)
+                if (!homeState.doors.contains(it.id)) {
+                    homeState.doors[it.id] = Door(it.open, it.x, it.y, it.z)
                 } else {
-                    homeState.doors.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
+                    homeState.doors.update(it.id) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
                 }
             }
         }
@@ -58,10 +58,10 @@ class Controller(
     ) {
         if (homeState.players[headers.sessionId]?.role == HOST) {
             message.payload.forEach {
-                if (!homeState.lights.contains(it.doorID)) {
-                    homeState.lights[it.doorID] = Door(it.open, it.x, it.y, it.z)
+                if (!homeState.lights.contains(it.id)) {
+                    homeState.lights[it.id] = Door(it.open, it.x, it.y, it.z)
                 } else {
-                    homeState.lights.update(it.doorID) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
+                    homeState.lights.update(it.id) { copy(open = it.open, x = it.x, y = it.y, z = it.z) }
                 }
             }
         }
