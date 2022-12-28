@@ -38,18 +38,16 @@ namespace SmartEl
         {
         }
         
-        public IEnumerator TurnOnLight()
+        public void TurnOnLight()
         {
             print("you are turn on light");
             Light.enabled = true;
-            yield return new WaitForSeconds(.5f);
         }
         
-        public IEnumerator TurnOffLight()
+        public void TurnOffLight()
         {
             print("you are turn on light");
             Light.enabled = false;
-            yield return new WaitForSeconds(.5f);
         }
         
     }

@@ -31,20 +31,18 @@ namespace SmartEl
         {
         }
 
-        public IEnumerator opening()
+        public void opening()
         {
             print("opening the door: " + Id);
             openandclose.Play("Opening");
             open = true;
-            yield return new WaitForSeconds(.5f);
         }
 
-        public IEnumerator closing()
+        public void closing()
         {
             print("closing the door: " + Id);
             openandclose.Play("Closing");
             open = false;
-            yield return new WaitForSeconds(.5f);
         }
     }
 }

@@ -58,8 +58,8 @@ namespace SmartEl
         {
             var clientId = Guid.NewGuid().ToString();
             // ws = new WebSocket("ws://"+ UIControllerScript.IP.text +":8080/gs-guide-websocket");
-            // ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
-            ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
+            ws = new WebSocket("ws://"+ "51.250.9.76" +":8080/gs-guide-websocket");
+            // ws = new WebSocket("ws://" + "127.0.0.1" + ":8080/gs-guide-websocket");
             ws.OnOpen += (sender, e) =>
             {
                 var serializer = new StompMessageSerializer();
@@ -229,11 +229,11 @@ namespace SmartEl
                 }
                 if (smartDoorDto.open.Equals(true) && smartDoor.open.Equals(false))
                 {
-                    StartCoroutine(smartDoor.opening());
+                    smartDoor.opening();
                 }
                 if (smartDoorDto.open.Equals(false) && smartDoor.open.Equals(true))
                 {
-                    StartCoroutine(smartDoor.closing());
+                    smartDoor.closing();
                 }
             }
         }
@@ -250,11 +250,11 @@ namespace SmartEl
                 }
                 if (smartLightDto.enable.Equals(true) && smartLight.Light.enabled.Equals(false))
                 {
-                    StartCoroutine(smartLight.TurnOnLight());
+                    smartLight.TurnOnLight();
                 }
                 if (smartLightDto.enable.Equals(false) && smartLight.Light.enabled.Equals(true))
                 {
-                    StartCoroutine(smartLight.TurnOffLight());
+                    smartLight.TurnOffLight();
                 }
             }
         }
