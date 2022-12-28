@@ -9,8 +9,9 @@ namespace SmartEl.Dtos
         public float x;
         public float y;
         public float z;
+        public RolesEnum level;
 
-        public Updates(string id, float x, float y, float z)
+        public Updates(string id, float x, float y, float z, RolesEnum level)
         {
             this.id = id;
             this.x = x;

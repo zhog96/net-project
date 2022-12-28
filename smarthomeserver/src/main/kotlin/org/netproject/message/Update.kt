@@ -1,6 +1,7 @@
 package org.netproject.message
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.netproject.home.Roles
 
 data class Update(
         @JsonProperty
@@ -10,5 +11,7 @@ data class Update(
         @JsonProperty
         val y: Double,
         @JsonProperty
-        val z: Double
+        val z: Double,
+        @JsonProperty
+        val level: Roles
 )
